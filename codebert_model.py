@@ -1,0 +1,76 @@
+
+from base_model import BaseModel
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
+import torch
+from code_dataset import CodeDataset
+import os
+
+
+
+class CodeBertModel(BaseModel):
+
+    def __init__(self, model_name="microsoft/codebert-base"):
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            model_name, num_labels=2
+        ).to(self.device)
+
+
+    def _build_dataset(self, samples):
+        texts = [s["code"] for s in samples]
+        labels = [s["label"] for s in samples]
+
+        encodings = self.tokenizer (
+            texts,
+            truncation=True,
+            padding=True,
+            max_length=512
+        )
+
+        return CodeDataset(encodings, labels)
+
+    def train(self, samples):
+        dataset = self._build_dataset(samples)
+
+        args = TrainingArguments(
+            output_dir="artifacts/codebert",
+            num_train_epochs=1,
+            per_device_train_batch_size=4, #with 2 will take more time
+            logging_steps=50,
+            save_steps=500,
+            save_total_limit=1,
+            report_to="none",
+            fp16=torch.cuda.is_available()
+        )
+
+        trainer = Trainer(
+            model=self.model,
+            args=args,
+            train_dataset=dataset
+        )
+
+        trainer.train()
+
+    def predict(self, code: str) -> float:
+        inputs = self.tokenizer(
+            code,
+            return_tensors="pt",
+            truncation=True,
+            max_length=512
+        ).to(self.device)
+
+        with torch.no_grad():
+            logits = self.model(**inputs).logits
+            probs = torch.softmax(logits, dim=1)
+
+        return probs[0][1].item()
+
+    def save(self, path: str):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        self.model.save_pretrained(path)
+        self.tokenizer.save_pretrained(path)
+
+    def load(self, path: str):
+        self.model = AutoModelForSequenceClassification.from_pretrained(path).to(self.device)
+        self.tokenizer = AutoTokenizer.from_pretrained(path)
