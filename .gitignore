@@ -133,3 +133,5 @@ dmypy.json
 #not publishing models due to size
 codebert/
 classical/
+codebert-500samples/
+.venv*

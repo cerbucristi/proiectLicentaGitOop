@@ -1,6 +1,6 @@
 
 from base_model import BaseModel
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, DataCollatorWithPadding, Trainer, TrainingArguments
 import torch
 from code_dataset import CodeDataset
 import os
@@ -11,6 +11,7 @@ class CodeBertModel(BaseModel):
 
     def __init__(self, model_name="microsoft/codebert-base"):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"CodeBertModel using device: {self.device}")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSequenceClassification.from_pretrained(
             model_name, num_labels=2
@@ -18,17 +19,19 @@ class CodeBertModel(BaseModel):
 
 
     def _build_dataset(self, samples):
-        texts = [s["code"] for s in samples]
-        labels = [s["label"] for s in samples]
+        return CodeDataset(samples, self.tokenizer)
 
-        encodings = self.tokenizer (
-            texts,
-            truncation=True,
-            padding=True,
-            max_length=512
-        )
+        # texts = [s["code"] for s in samples]
+        # labels = [s["label"] for s in samples]
 
-        return CodeDataset(encodings, labels)
+        # encodings = self.tokenizer (
+        #     texts,
+        #     truncation=True,
+        #     padding=True,
+        #     max_length=512
+        # )
+
+        # return CodeDataset(encodings, labels)
 
     def train(self, samples):
         dataset = self._build_dataset(samples)
@@ -36,7 +39,7 @@ class CodeBertModel(BaseModel):
         args = TrainingArguments(
             output_dir="artifacts/codebert",
             num_train_epochs=1,
-            per_device_train_batch_size=4, #with 2 will take more time
+            per_device_train_batch_size=8, #with 2 will take more time
             logging_steps=50,
             save_steps=500,
             save_total_limit=1,
@@ -44,11 +47,20 @@ class CodeBertModel(BaseModel):
             fp16=torch.cuda.is_available()
         )
 
+        data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
+
         trainer = Trainer(
             model=self.model,
             args=args,
-            train_dataset=dataset
+            train_dataset=dataset,
+            data_collator=data_collator
         )
+
+        # trainer = Trainer(
+        #     model=self.model,
+        #     args=args,
+        #     train_dataset=dataset
+        # )
 
         trainer.train()
 
