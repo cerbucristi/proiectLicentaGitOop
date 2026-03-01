@@ -4,6 +4,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Data
 import torch
 from code_dataset import CodeDataset
 import os
+import matplotlib.pyplot as plt
 
 
 
@@ -33,18 +34,53 @@ class CodeBertModel(BaseModel):
 
         # return CodeDataset(encodings, labels)
 
+    def _save_loss_plot(self, log_history, output_dir):
+        epochs = []
+        losses = []
+
+        for entry in log_history:
+            if "loss" in entry and "epoch" in entry:
+                epochs.append(float(entry["epoch"]))
+                losses.append(float(entry["loss"]))
+
+        if not losses:
+            print("No training loss logs found, skipping loss plot generation.")
+            return
+
+        os.makedirs(output_dir, exist_ok=True)
+        plot_path = os.path.join(output_dir, "loss_vs_epoch.png")
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(epochs, losses, marker="o", linewidth=1.5)
+        plt.title("CodeBERT Training Loss vs Epoch")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(plot_path, dpi=150)
+        plt.close()
+
+        print(f"Saved CodeBERT loss plot to: {plot_path}")
+
     def train(self, samples):
         dataset = self._build_dataset(samples)
 
         args = TrainingArguments(
             output_dir="artifacts/codebert",
-            num_train_epochs=1,
+            num_train_epochs=3,
             per_device_train_batch_size=8, #with 2 will take more time
+            learning_rate=2e-5,
+            weight_decay=0.01,
+            warmup_ratio=0.1,
             logging_steps=50,
-            save_steps=500,
-            save_total_limit=1,
-            report_to="none",
-            fp16=torch.cuda.is_available()
+            save_total_limit=2,
+            fp16=torch.cuda.is_available(),
+            report_to="none"
+            # logging_steps=50,
+            # save_steps=500,
+            # save_total_limit=1,
+            # report_to="none",
+            # fp16=torch.cuda.is_available()
         )
 
         data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
@@ -63,6 +99,7 @@ class CodeBertModel(BaseModel):
         # )
 
         trainer.train()
+        self._save_loss_plot(trainer.state.log_history, args.output_dir)
 
     def predict(self, code: str) -> float:
         inputs = self.tokenizer(

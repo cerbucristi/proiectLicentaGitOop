@@ -6,7 +6,7 @@ class DataPipeline:
     """Handle dataset balancing, splitting, and metrics calculation."""
     
     @staticmethod
-    def balance_dataset(samples, random_state=42):
+    def balance_dataset(samples, random_state=42, max_per_class=None):
         """Balance dataset by downsampling the majority class."""
         vulnerable = [s for s in samples if s["label"] == 1]
         safe = [s for s in samples if s["label"] == 0]
@@ -15,6 +15,8 @@ class DataPipeline:
         
         # Downsample majority class to match minority
         min_count = min(len(vulnerable), len(safe))
+        if max_per_class is not None:
+            min_count = min(min_count, int(max_per_class))
         
         np.random.seed(random_state)
         vulnerable = np.random.choice(vulnerable, size=min_count, replace=False).tolist()

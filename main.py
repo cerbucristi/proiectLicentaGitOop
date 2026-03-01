@@ -3,6 +3,10 @@ from logistic_regression_model import LogisticRegressionModel
 from codebert_model import CodeBertModel
 from code_processor import CodePreprocessor
 from data_pipeline import DataPipeline
+import os
+
+
+MAX_PER_CLASS = int(os.getenv("MAX_PER_CLASS", "5000"))
 
 # ============================================================================
 # 1. LOAD AND BALANCE DATASET
@@ -12,7 +16,8 @@ dataset = MegaVulDataset()
 samples = dataset.load()
 
 print("\nBalancing dataset...")
-balanced_samples = DataPipeline.balance_dataset(samples)
+print(f"Using MAX_PER_CLASS={MAX_PER_CLASS} (total after balancing ≈ {MAX_PER_CLASS * 2})")
+balanced_samples = DataPipeline.balance_dataset(samples, max_per_class=MAX_PER_CLASS)
 
 # ============================================================================
 # 2. SPLIT INTO TRAIN AND VALIDATION (FIXED FOR BOTH MODELS)
