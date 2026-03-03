@@ -1,0 +1,89 @@
+(.venv_licenta) PS C:\Licenta\proiectLicentaGitOop> $env:MAX_PER_CLASS="none"; python .\main.py
+Loading dataset...
+
+Balancing dataset...
+Using full balanced dataset (MAX_PER_CLASS disabled)
+Before balancing: Vulnerable=34657, Safe=671797
+After balancing: Total=69314, Vulnerable=34657, Safe=34657
+
+Splitting into train and validation sets...
+Train set: 55451 samples
+Validation set: 13863 samples
+
+================================================================================
+ID3 (DECISION TREE) MODEL
+================================================================================
+
+Training ID3 (word_tfidf) on train set...
+[word_tfidf] Saved ID3 loss plot to: artifacts/classical/id3\id3_word_tfidf_loss_vs_depth.png
+[word_tfidf] Found 271 conflicting duplicate feature groups.
+[word_tfidf] Conflict report saved to: artifacts/classical/id3\id3_word_tfidf_feature_conflicts.csv
+[word_tfidf] Duplicate feature groups (any label): 11490
+
+Evaluating ID3 (word_tfidf)...
+
+============================================================
+Metrics for ID3(word_tfidf) - TRAIN SET
+============================================================
+Precision: 0.9935
+Recall:    0.9950
+F1 Score:  0.9942
+Accuracy:  0.9942
+
+Confusion Matrix:
+  TP: 27586  FP:  181
+  FN:  140  TN: 27544
+============================================================
+
+
+============================================================
+Metrics for ID3(word_tfidf) - VALIDATION SET
+============================================================
+Precision: 0.7827
+Recall:    0.8879
+F1 Score:  0.8320
+Accuracy:  0.8207
+
+Confusion Matrix:
+  TP: 6154  FP: 1709
+  FN:  777  TN: 5223
+============================================================
+
+
+Training ID3 (char_tfidf) on train set...
+[char_tfidf] Saved ID3 loss plot to: artifacts/classical/id3\id3_char_tfidf_loss_vs_depth.png
+[char_tfidf] Found 138 conflicting duplicate feature groups.
+[char_tfidf] Conflict report saved to: artifacts/classical/id3\id3_char_tfidf_feature_conflicts.csv
+[char_tfidf] Duplicate feature groups (any label): 11201
+
+Evaluating ID3 (char_tfidf)...
+
+============================================================
+Metrics for ID3(char_tfidf) - TRAIN SET
+============================================================
+Precision: 0.9968
+Recall:    0.9981
+F1 Score:  0.9974
+Accuracy:  0.9974
+
+Confusion Matrix:
+  TP: 27674  FP:   90
+  FN:   52  TN: 27635
+============================================================
+
+
+============================================================
+Metrics for ID3(char_tfidf) - VALIDATION SET
+============================================================
+Precision: 0.7673
+Recall:    0.8986
+F1 Score:  0.8278
+Accuracy:  0.8130
+
+Confusion Matrix:
+  TP: 6228  FP: 1889
+  FN:  703  TN: 5043
+============================================================
+
+Saving models...
+Models saved successfully!

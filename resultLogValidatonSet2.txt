@@ -1,0 +1,72 @@
+{'loss': '0.4982', 'grad_norm': '8.42', 'learning_rate': '7.43e-06', 'epoch': '2'}                             
+Writing model shards: 100%|█████████████████████████████████████████████████████| 1/1 [00:02<00:00,  2.32s/it] 
+{'loss': '0.4732', 'grad_norm': '12.01', 'learning_rate': '7.059e-06', 'epoch': '2.05'}                        
+{'loss': '0.4539', 'grad_norm': '8.446', 'learning_rate': '6.689e-06', 'epoch': '2.1'}                         
+{'loss': '0.4456', 'grad_norm': '13.79', 'learning_rate': '6.319e-06', 'epoch': '2.15'}                        
+{'loss': '0.4318', 'grad_norm': '13.48', 'learning_rate': '5.948e-06', 'epoch': '2.2'}                         
+{'loss': '0.3707', 'grad_norm': '8.72', 'learning_rate': '5.578e-06', 'epoch': '2.25'}                         
+{'loss': '0.4362', 'grad_norm': '20.3', 'learning_rate': '5.207e-06', 'epoch': '2.3'}                          
+{'loss': '0.4146', 'grad_norm': '20.77', 'learning_rate': '4.837e-06', 'epoch': '2.35'}                        
+{'loss': '0.4406', 'grad_norm': '4.598', 'learning_rate': '4.467e-06', 'epoch': '2.4'}                         
+{'loss': '0.4373', 'grad_norm': '13.88', 'learning_rate': '4.096e-06', 'epoch': '2.45'}                        
+{'loss': '0.4191', 'grad_norm': 'inf', 'learning_rate': '3.726e-06', 'epoch': '2.5'}                           
+Writing model shards: 100%|█████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.62s/it] 
+{'loss': '0.4008', 'grad_norm': '5.69', 'learning_rate': '3.363e-06', 'epoch': '2.55'}                         
+{'loss': '0.475', 'grad_norm': '17.76', 'learning_rate': '2.993e-06', 'epoch': '2.6'}
+{'loss': '0.4464', 'grad_norm': '41.53', 'learning_rate': '2.622e-06', 'epoch': '2.65'}                        
+{'loss': '0.4385', 'grad_norm': '9.07', 'learning_rate': '2.259e-06', 'epoch': '2.7'}                          
+{'loss': '0.4251', 'grad_norm': '13.61', 'learning_rate': '1.889e-06', 'epoch': '2.75'}                        
+{'loss': '0.3714', 'grad_norm': '6.539', 'learning_rate': '1.519e-06', 'epoch': '2.8'}                         
+{'loss': '0.4604', 'grad_norm': '20.48', 'learning_rate': '1.148e-06', 'epoch': '2.85'}                        
+{'loss': '0.4396', 'grad_norm': '18.45', 'learning_rate': '7.778e-07', 'epoch': '2.9'}                         
+{'loss': '0.4127', 'grad_norm': '26.08', 'learning_rate': '4.074e-07', 'epoch': '2.95'}                        
+{'loss': '0.433', 'grad_norm': '20.56', 'learning_rate': '3.704e-08', 'epoch': '3'}                            
+Writing model shards: 100%|█████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.18s/it] 
+{'train_runtime': '1.091e+04', 'train_samples_per_second': '2.199', 'train_steps_per_second': '0.275', 'train_loss': '0.5233', 'epoch': '3'}
+100%|███████████████████████████████████████████████████████████████████| 3000/3000 [3:01:52<00:00,  3.64s/it] 
+Saved CodeBERT loss plot to: artifacts/codebert\loss_vs_epoch.png
+
+Evaluating CodeBERT...
+
+============================================================
+Metrics for CodeBERT - TRAIN SET
+============================================================
+Precision: 0.8143
+Recall:    0.8915
+F1 Score:  0.8512
+Accuracy:  0.8441
+
+Confusion Matrix:
+  TP: 3566  FP:  813
+  FN:  434  TN: 3187
+============================================================
+
+
+============================================================
+Metrics for CodeBERT - VALIDATION SET
+============================================================
+Precision: 0.7042
+Recall:    0.7450
+F1 Score:  0.7240
+Accuracy:  0.7160
+
+Confusion Matrix:
+  TP:  745  FP:  313
+  FN:  255  TN:  687
+============================================================
+
+
+================================================================================
+MODEL COMPARISON - VALIDATION SET
+================================================================================
+Metric          LogisticRegression        CodeBERT                  Winner
+--------------------------------------------------------------------------------
+precision       0.6569                    0.7042                    CodeBERT ✓
+recall          0.6970                    0.7450                    CodeBERT ✓
+f1              0.6764                    0.7240                    CodeBERT ✓
+accuracy        0.6665                    0.7160                    CodeBERT ✓
+================================================================================
+
+Saving models...
+Writing model shards: 100%|█████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.62s/it]
+Models saved successfully!

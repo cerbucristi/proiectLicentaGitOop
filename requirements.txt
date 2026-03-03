@@ -5,3 +5,4 @@ scikit-learn
 joblib
 accelerate>=1.1.0
 matplotlib
+pandas

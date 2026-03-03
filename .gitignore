@@ -131,9 +131,13 @@ dmypy.json
 .DS_Store
 
 #not publishing models due to size
-artifacts/
+# artifacts/
 # codebert/
 # classical/
 # codebert-500samples/
 # classical-lr_old/
 .venv*
+/artifacts/**
+!/artifacts/**/
+!/artifacts/**/*.png
+!/artifacts/**/*.csv

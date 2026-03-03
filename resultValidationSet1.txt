@@ -1,3 +1,5 @@
+firt conclusion: "Ca o paranteza: Interesant e si faptul ca regresia logistica are o diferenta de 0.05 intre erorile train si test, iar bert o diferenta de 0.01, ceea ce indica faptul ca regrestia logistica are un mic overfitting, in timp ce la bert e aproape inexistent overfittingul. mai degraba ar fi underfitting, pt ca avem eroare relativ mare pana si pe train."
+
 (.venv_licenta) PS C:\Licenta\proiectLicentaGitOop> python.exe .\main.py
 Loading dataset...
 
