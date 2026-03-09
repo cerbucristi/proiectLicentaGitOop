@@ -1,0 +1,90 @@
+(.venv_licenta) PS C:\Licenta\proiectLicentaGitOop>  $env:SOURCE_DATASET_CSV="artifacts/classical/id3/text_conflicts/source_of_truth_non_conflicting_texts_balanced.csv"; $env:ID3_OUTPUT_DIR="artifacts/classical/id3/id3FilteredInput"; python .\main.py
+>> 
+Loading dataset...
+Loading source-of-truth dataset from CSV: artifacts/classical/id3/text_conflicts/source_of_truth_non_conflicting_texts_balanced.csv
+
+Balancing dataset...
+Skipping balancing because SOURCE_DATASET_CSV is provided.
+
+Splitting into train and validation sets...
+Train set: 25206 samples
+Validation set: 6302 samples
+
+================================================================================
+ID3 (DECISION TREE) MODEL
+================================================================================
+ID3 output directory: artifacts/classical/id3/id3FilteredInput
+
+Training ID3 (word_tfidf) on train set...
+[word_tfidf] Saved ID3 loss plot to: artifacts/classical/id3/id3FilteredInput\id3_word_tfidf_loss_vs_depth.png
+[word_tfidf] Found 47 conflicting duplicate feature groups.
+[word_tfidf] Conflict report saved to: artifacts/classical/id3/id3FilteredInput\id3_word_tfidf_feature_conflicts.csv
+[word_tfidf] Duplicate feature groups (any label): 277
+
+Evaluating ID3 (word_tfidf)...
+
+============================================================
+Metrics for ID3(word_tfidf) - TRAIN SET
+============================================================
+Precision: 0.9999
+Recall:    0.9955
+F1 Score:  0.9977
+Accuracy:  0.9977
+
+Confusion Matrix:
+  TP: 12546  FP:    1
+  FN:   57  TN: 12602
+============================================================
+
+
+============================================================
+Metrics for ID3(word_tfidf) - VALIDATION SET
+============================================================
+Precision: 0.6354
+Recall:    0.5906
+F1 Score:  0.6122
+Accuracy:  0.6258
+
+Confusion Matrix:
+  TP: 1861  FP: 1068
+  FN: 1290  TN: 2083
+============================================================
+
+
+Training ID3 (char_tfidf) on train set...
+[char_tfidf] Saved ID3 loss plot to: artifacts/classical/id3/id3FilteredInput\id3_char_tfidf_loss_vs_depth.png
+[char_tfidf] Found 8 conflicting duplicate feature groups.
+[char_tfidf] Conflict report saved to: artifacts/classical/id3/id3FilteredInput\id3_char_tfidf_feature_conflicts.csv
+[char_tfidf] Duplicate feature groups (any label): 14
+
+Evaluating ID3 (char_tfidf)...
+
+============================================================
+Metrics for ID3(char_tfidf) - TRAIN SET
+============================================================
+Precision: 1.0000
+Recall:    0.9994
+F1 Score:  0.9997
+Accuracy:  0.9997
+
+Confusion Matrix:
+  TP: 12595  FP:    0
+  FN:    8  TN: 12603
+============================================================
+
+
+============================================================
+Metrics for ID3(char_tfidf) - VALIDATION SET
+============================================================
+Precision: 0.6166
+Recall:    0.6125
+F1 Score:  0.6146
+Accuracy:  0.6158
+
+Confusion Matrix:
+  TP: 1930  FP: 1200
+  FN: 1221  TN: 1951
+============================================================
+
+Saving models...
+Models saved successfully!

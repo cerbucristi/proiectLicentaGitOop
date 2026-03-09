@@ -1,5 +1,6 @@
 from datasets import load_dataset
 from code_processor import CodePreprocessor
+import pandas as pd
 
 class MegaVulDataset:
     def __init__(self, streaming=True):
@@ -27,5 +28,20 @@ class MegaVulDataset:
             if limit and len(samples) >= limit:
                 break
 
+        return samples
+
+    def load_from_csv(self, csv_path, limit=None):
+        df = pd.read_csv(csv_path)
+
+        if "code" not in df.columns or "label" not in df.columns:
+            raise ValueError("CSV must contain 'code' and 'label' columns.")
+
+        if limit is not None:
+            df = df.head(limit)
+
+        samples = [
+            {"code": row["code"], "label": int(row["label"])}
+            for _, row in df.iterrows()
+        ]
         return samples
     

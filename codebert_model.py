@@ -83,6 +83,25 @@ class CodeBertModel(BaseModel):
             # fp16=torch.cuda.is_available()
         )
 
+        #other approach suggested by chatgpt:
+        '''TrainingArguments(
+        output_dir="artifacts/codebert",
+        num_train_epochs=2,
+        per_device_train_batch_size=8,
+        learning_rate=2e-5,
+        weight_decay=0.01,
+        warmup_ratio=0.1,
+        logging_steps=100,
+        evaluation_strategy="epoch",
+        save_strategy="epoch",
+        load_best_model_at_end=True,
+        metric_for_best_model="f1",
+        fp16=True,
+        report_to="none"
+    )'''
+
+
+
         data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
 
         trainer = Trainer(

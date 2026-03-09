@@ -10,10 +10,11 @@ from base_model import BaseModel
 
 
 class DecisionTreeModel(BaseModel):
-    def __init__(self, feature_mode="word_tfidf", max_features=50000, random_state=42):
+    def __init__(self, feature_mode="word_tfidf", max_features=50000, random_state=42, output_dir="artifacts/classical/id3"):
         self.feature_mode = feature_mode
         self.max_features = max_features
         self.random_state = random_state
+        self.output_dir = output_dir
         self.vectorizer = self._create_vectorizer()
         self.model = DecisionTreeClassifier(
             criterion="entropy",
@@ -47,7 +48,9 @@ class DecisionTreeModel(BaseModel):
         pairs = [f"{idx}:{val:.8f}" for idx, val in zip(indices, values)]
         return "|".join(pairs)
 
-    def analyze_feature_label_conflicts(self, X_vec, y, output_dir="artifacts/classical/id3"):
+    def analyze_feature_label_conflicts(self, X_vec, y, output_dir=None):
+        if output_dir is None:
+            output_dir = self.output_dir
         os.makedirs(output_dir, exist_ok=True)
 
         signatures = [self._row_signature(X_vec.getrow(i)) for i in range(X_vec.shape[0])]
@@ -76,7 +79,9 @@ class DecisionTreeModel(BaseModel):
 
         print(f"[{self.feature_mode}] Duplicate feature groups (any label): {duplicate_count}")
 
-    def _save_loss_plot(self, X_vec, y, output_dir="artifacts/classical/id3", max_points=20):
+    def _save_loss_plot(self, X_vec, y, output_dir=None, max_points=20):
+        if output_dir is None:
+            output_dir = self.output_dir
         os.makedirs(output_dir, exist_ok=True)
 
         fitted_depth = self.model.get_depth()
@@ -133,6 +138,7 @@ class DecisionTreeModel(BaseModel):
                 "feature_mode": self.feature_mode,
                 "max_features": self.max_features,
                 "random_state": self.random_state,
+                "output_dir": self.output_dir,
             },
             path,
         )
@@ -144,3 +150,4 @@ class DecisionTreeModel(BaseModel):
         self.feature_mode = artifact.get("feature_mode", "word_tfidf")
         self.max_features = artifact.get("max_features", 50000)
         self.random_state = artifact.get("random_state", 42)
+        self.output_dir = artifact.get("output_dir", "artifacts/classical/id3")

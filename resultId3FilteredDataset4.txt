@@ -1,0 +1,73 @@
+(.venv_licenta) PS C:\Licenta\proiectLicentaGitOop> $env:SOURCE_DATASET_CSV="artifacts/classical/id3/text_conflicts/source_of_truth_non_conflicting_texts.csv"; $env:ID3_OUTPUT_DIR="artifacts/id3/classical/id3FilteredInput"; python .\main.py
+Loading dataset...
+Loading source-of-truth dataset from CSV: artifacts/classical/id3/text_conflicts/source_of_truth_non_conflicting_texts.csv
+
+Balancing dataset...
+Skipping balancing because SOURCE_DATASET_CSV is provided.
+
+Splitting into train and validation sets...
+Train set: 282536 samples
+Validation set: 70634 samples
+
+================================================================================
+ID3 (DECISION TREE) MODEL
+================================================================================
+ID3 output directory: artifacts/id3/classical/id3FilteredInput
+
+Training ID3 (word_tfidf) on train set...
+[word_tfidf] Saved ID3 loss plot to: artifacts/id3/classical/id3FilteredInput\id3_word_tfidf_loss_vs_depth.png
+[word_tfidf] Found 1101 conflicting duplicate feature groups.
+[word_tfidf] Conflict report saved to: artifacts/id3/classical/id3FilteredInput\id3_word_tfidf_feature_conflicts.csv
+[word_tfidf] Duplicate feature groups (any label): 12531
+
+Evaluating ID3 (word_tfidf)...
+
+============================================================
+Metrics for ID3(word_tfidf) - TRAIN SET
+============================================================
+Precision: 0.9993
+Recall:    0.9103
+F1 Score:  0.9527
+Accuracy:  0.9960
+
+Confusion Matrix:
+  TP: 11473  FP:    8
+  FN: 1130  TN: 269925
+============================================================
+
+
+============================================================
+Metrics for ID3(word_tfidf) - VALIDATION SET
+============================================================
+Precision: 0.0912
+Recall:    0.0936
+F1 Score:  0.0924
+Accuracy:  0.9179
+
+Confusion Matrix:
+  TP:  295  FP: 2940
+  FN: 2856  TN: 64543
+============================================================
+
+
+Training ID3 (char_tfidf) on train set...
+Traceback (most recent call last):
+  File "C:\Licenta\proiectLicentaGitOop\main.py", line 92, in <module>
+    id3_char.train(train_samples)
+  File "C:\Licenta\proiectLicentaGitOop\decision_tree_model.py", line 123, in train
+    X_vec = self.vectorizer.fit_transform(X)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Licenta\proiectLicentaGitOop\.venv_licenta\Lib\site-packages\sklearn\feature_extraction\text.py", line 2104, in fit_transform
+    X = super().fit_transform(raw_documents)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Licenta\proiectLicentaGitOop\.venv_licenta\Lib\site-packages\sklearn\base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Licenta\proiectLicentaGitOop\.venv_licenta\Lib\site-packages\sklearn\feature_extraction\text.py", line 1398, in fit_transform
+    X = self._sort_features(X, vocabulary)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Licenta\proiectLicentaGitOop\.venv_licenta\Lib\site-packages\sklearn\feature_extraction\text.py", line 1214, in _sort_features
+    X.indices = map_index.take(X.indices, mode="clip")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 753. MiB for an array with shape (197454722,) and data type int32
+(.venv_licenta) PS C:\Licenta\proiectLicentaGitOop> 
